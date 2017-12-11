@@ -1,0 +1,65 @@
+@import "colors";
+
+.header {
+	font:400 12px/19px sans-serif;
+
+	.content {
+		padding-top:30px;
+		padding-bottom:30px;
+		justify-content: space-between;
+
+	}
+}
+
+.header-logo {
+	position: relative;
+
+	img {
+		height:100%;
+		width:auto;
+	}
+}
+
+.main-nav {
+
+	a {
+
+	}
+
+	ul {
+
+	}
+
+	li {
+
+	}
+}
+
+.current-menu-item {
+	border-bottom: 2px solid blue;
+
+	a {
+		color:blue;
+	}
+}
+
+.mobile-menu {
+	display: none;
+}
+
+// 1024px And Below
+@media screen and (max-width: 1024px){
+
+	.header {
+
+	}
+}
+
+
+// 767px And Below
+@media screen and (max-width: 767px){
+
+	.header {
+		
+	}
+}

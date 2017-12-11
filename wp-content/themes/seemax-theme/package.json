@@ -1,0 +1,18 @@
+{
+  "name": "fug_theme",
+  "version": "1.0.0",
+  "devDependencies": {
+    "browser-sync": "*",
+    "gulp": "^3.9.1",
+    "gulp-autoprefixer": "*",
+    "gulp-clean-css": "^3.9.0",
+    "gulp-concat-util": "*",
+    "gulp-jshint": "^2.0.4",
+    "gulp-load-plugins": "^1.5.0",
+    "gulp-sass": "*",
+    "gulp-uglify": "^3.0.0",
+    "jshint": "^2.9.5",
+    "jshint-stylish": "^2.2.1",
+    "pump": "^1.0.2"
+  }
+}

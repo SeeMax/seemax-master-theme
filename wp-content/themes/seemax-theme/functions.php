@@ -509,57 +509,8 @@ add_filter('admin_footer_text', 'remove_footer_admin');
 
 
 
-/*	ADMIN FAV ICON */
 
-//	function FGU_favicon()
-//	{
-//    echo '<link rel="shortcut icon" type="image/x-icon" href="'.get_template_directory_uri().'/img/favicon.png">';
-//	}
-// add_action('wp_head', 'FGU_favicon');
-// add_action('admin_head', 'FGU_favicon');
-
-
-
-/* CLIENT CUSTOM DASHBOARD WIDGET */
-
-add_action('wp_dashboard_setup', 'hints_tips_widget');
-
-function hints_tips_widget()
-{
-    global $wp_meta_boxes;
-
-    wp_add_dashboard_widget('custom_help_widget', 'WordPress Documentation', 'custom_hints_tips');
-}
-
-function custom_hints_tips()
-{
-    echo '
-<h2>Wordpress Guide and Info</h2>
-<i>Click on the link below to access your guide.</i><br />
-
-    <ul>
-    <li><h3><a style="text-decoration:none;" href="#" target="_blank">Trice Medical Wordpress Guide</a></h3></li>
-    </ul>
-
-
-
-<!-- <h2>Recommended Image Sizes</h2>
-
-<ul>
-<li><b>Event Images:</b> 760 x 500 pixels - 200kb size limit</li>
-<li><b>Press Page Thumbnails:</b> 500x 300 pixels</li>
-<li><b>Case Report Headshots:</b> 255 x 178 pixels</li>
-<li><b>Case Report Images:</b> 500 x 500 pixels </li>
-</ul> -->';
-}
-
-
-/*//////////////////////////////*/
 /* ADMIN AREA CLEANUP AND GLOBAL MODS */
-/*//////////////////////////////*/
-
-
-
 
 function remove_dashboard_meta()
 {
@@ -573,10 +524,8 @@ function remove_dashboard_meta()
     remove_meta_box('dashboard_right_now', 'dashboard', 'normal');
     remove_meta_box('dashboard_activity', 'dashboard', 'normal');//since 3.8
 }
-
 add_action('admin_init', 'remove_dashboard_meta');
 
-// disable default dashboard widgets
 
 if (!function_exists('disable_default_dashboard_widgets')) {
     function disable_default_dashboard_widgets()
@@ -665,23 +614,26 @@ $emoji_svg_url = apply_filters('emoji_svg_url', 'https://s.w.org/images/core/emo
 }
 
 // Remove Wordpress SideNav Items
+function remove_menus(){
 
-// function remove_menus(){
-  
-//   remove_menu_page( 'edit.php' );                  //Posts
-//   remove_menu_page( 'index.php' );                  //Dashboard
-//   remove_menu_page( 'jetpack' );                    //Jetpack* 
-//   remove_menu_page( 'edit-comments.php' );          //Comments
-//   // remove_menu_page( 'themes.php' );                 //Appearance
-//   remove_menu_page( 'plugins.php' );                //Plugins
-//   // remove_menu_page( 'users.php' );                  //Users
-//   remove_menu_page( 'tools.php' );                  //Tools
-//   remove_menu_page( 'options-general.php' );        //Settings
-//   remove_menu_page('edit.php?post_type=acf-field-group');      //ACF
-// }
-// add_action( 'admin_menu', 'remove_menus', 9999);
-
+  if ( is_user_logged_in() ) {
+    $current_user = wp_get_current_user();
+    // ADD USER ID INSIDE array() SO THOSE USERS DON'T HAVE THE BELOW HIDDEN
+    if (!in_array($current_user->ID, array())) {
+      // remove_menu_page( 'edit.php' );                  //Posts
+      // remove_menu_page( 'index.php' );                  //Dashboard
+      //   remove_menu_page( 'jetpack' );                    //Jetpack* 
+      // remove_menu_page( 'edit-comments.php' );          //Comments
+      // remove_menu_page( 'themes.php' );                 //Appearance
+      // remove_menu_page( 'plugins.php' );                //Plugins
+      //   // remove_menu_page( 'users.php' );                  //Users
+      // remove_menu_page( 'tools.php' );                  //Tools
+      //   remove_menu_page( 'options-general.php' );        //Settings
+      // remove_menu_page('edit.php?post_type=acf-field-group');      //ACF
+    } 
+  }
+}
+add_action( 'admin_menu', 'remove_menus', 9999);
 
 /*	DISABLE XMLRPC 	*/
-
 add_filter('xmlrpc_enabled', '__return_false');

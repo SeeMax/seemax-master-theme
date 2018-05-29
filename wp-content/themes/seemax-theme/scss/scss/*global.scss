@@ -89,21 +89,6 @@ ul {
 	}
 }
 
-hr {
-	background: black;
-	margin:0;
-	text-align: left;
-	border:0;
-	width:60px;
-	height: 1px;
-}
-
-.hr-center {
-	margin:0 auto;
-	text-align: center;
-}
-
-
 .button {
 	position: relative;
 	font-size:14px;
@@ -122,6 +107,9 @@ hr {
   background-size: cover;
 }
 
+
+/* END FOR SOCIAL MEDIA LAYOUTS */
+
 // 1024px And Below
 @media screen and (max-width: 1024px){
 
@@ -134,27 +122,5 @@ hr {
 
 	.content {
 
-	}
-
-	h1 {
-		font-size:4em;
-		font-weight:900;
-	}
-
-	h2 {
-		font-size:3em;
-		font-weight:700;
-	}
-
-	h3 {
-		font-size:2em;
-	}
-
-	h4 {
-		font-size:1.5em;
-	}
-
-	h5 {
-		font-size:1em;
 	}
 }

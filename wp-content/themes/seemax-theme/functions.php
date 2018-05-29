@@ -207,7 +207,7 @@ function theme_header_scripts() {
   // wp_register_script('Tweenmax', get_template_directory_uri() . '/js/lib/TweenMax.min.js', array(), '1.19.1', true);
   // wp_enqueue_script('Tweenmax');
 
-  // wp_register_script('CSSPlugin', get_template_directory_uri() . '/js/lib/CSSPlugin.min.js', array(), '0.1.3', true); 
+  // wp_register_script('CSSPlugin', get_template_directory_uri() . '/js/lib/CSSPlugin.min.js', array(), '0.1.3', true);
   // wp_enqueue_script('CSSPlugin');
 
   // wp_register_script('DrawSVGPlugin', get_template_directory_uri() . '/js/lib/DrawSVGPlugin.min.js', array(), '0.1.3', true);
@@ -279,9 +279,9 @@ function theme_style()
   //	wp_register_style('SlickTheme', get_template_directory_uri() . '/css/slick-theme.css', array(), '1.0', 'all');
   //	wp_enqueue_style('SlickTheme'); // Enqueue it!
 
-  wp_register_style('fontawesome', '//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css', array(), '4.7.0', 'all');
+  wp_register_style('fontawesome', '//use.fontawesome.com/releases/v5.0.9/css/all.css', array(), '5.0.9', 'all');
   wp_enqueue_style('fontawesome'); // Enqueue it!
-   
+
   //  lightbox
   //  wp_register_style('lightbox', get_template_directory_uri() . '/css/lightbox.css', array(), '0.131', 'all');
   //	wp_enqueue_style('lightbox'); // Enqueue it!
@@ -411,6 +411,7 @@ function is_post_type($type)
 //                  'singular_name' => __('Event')
 //              ),
 //              'public' => true,
+//              'menu_icon' => 'dashicons-portfolio',
 //              'has_archive' => true,
 //              'supports' => array('title','editor'),
 //          )
@@ -581,7 +582,6 @@ add_action('init', 'disable_emojis');
 
 /**
 * REMOVE EMOJIS
-*
 * @param array $plugins
 * @return array Difference betwen the two arrays
 */
@@ -596,7 +596,6 @@ function disable_emojis_tinymce($plugins)
 
 /**
 * Remove emoji CDN hostname from DNS prefetching hints.
-*
 * @param array $urls URLs to print for resource hints.
 * @param string $relation_type The relation type the URLs are printed for.
 * @return array Difference betwen the two arrays.
@@ -613,24 +612,25 @@ $emoji_svg_url = apply_filters('emoji_svg_url', 'https://s.w.org/images/core/emo
     return $urls;
 }
 
-// Remove Wordpress SideNav Items
+
+// Remove Wordpress Menu Items
 function remove_menus(){
 
   if ( is_user_logged_in() ) {
     $current_user = wp_get_current_user();
-    // ADD USER ID INSIDE array() SO THOSE USERS DON'T HAVE THE BELOW HIDDEN
-    if (!in_array($current_user->ID, array())) {
-      // remove_menu_page( 'edit.php' );                  //Posts
-      // remove_menu_page( 'index.php' );                  //Dashboard
-      //   remove_menu_page( 'jetpack' );                    //Jetpack* 
-      // remove_menu_page( 'edit-comments.php' );          //Comments
-      // remove_menu_page( 'themes.php' );                 //Appearance
-      // remove_menu_page( 'plugins.php' );                //Plugins
-      //   // remove_menu_page( 'users.php' );                  //Users
-      // remove_menu_page( 'tools.php' );                  //Tools
-      //   remove_menu_page( 'options-general.php' );        //Settings
-      // remove_menu_page('edit.php?post_type=acf-field-group');      //ACF
-    } 
+    if (!in_array($current_user->ID, array(1))) {
+
+      remove_menu_page( 'edit.php' );                  //Posts
+      remove_menu_page( 'index.php' );                  //Dashboard
+    //   remove_menu_page( 'jetpack' );                    //Jetpack*
+      remove_menu_page( 'edit-comments.php' );          //Comments
+      remove_menu_page( 'themes.php' );                 //Appearance
+      remove_menu_page( 'plugins.php' );                //Plugins
+    //   // remove_menu_page( 'users.php' );                  //Users
+      remove_menu_page( 'tools.php' );                  //Tools
+    //   remove_menu_page( 'options-general.php' );        //Settings
+      remove_menu_page('edit.php?post_type=acf-field-group');      //ACF
+    }
   }
 }
 add_action( 'admin_menu', 'remove_menus', 9999);

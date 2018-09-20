@@ -1,5 +1,32 @@
 <?php
-/* Fugamma Setup*/
+/* ////////// IMPORTANT ///////////
+
+INCLUDE THE BELOW CONTENT ABOVE THE WP DIRECTIVES IN THE HTACCESS FILE AFTER IT IS GENERATED.
+
+THIS WILL FIX CORS FONT ERRORS.
+
+DELETE THIS FROM FUNCTIONS WHEN COMPLETE
+
+<----   START COPY --- >
+
+<IfModule mod_setenvif.c>
+<IfModule mod_headers.c>
+<FilesMatch "\.(gif|png|jpe?g|svg|svgz|ico|webp)$">
+SetEnvIf Origin ":" IS_CORS
+Header set Access-Control-Allow-Origin "*" env=IS_CORS
+</FilesMatch>
+</IfModule>
+</IfModule>
+<IfModule mod_headers.c>
+<FilesMatch ".(eot|otf|ttf|woff|woff2)">
+    Header set Access-Control-Allow-Origin "*"
+</FilesMatch>
+</IfModule>
+
+<!----- END COPY --->
+
+*/
+
 function fug_setup()
 {
     add_editor_style();

@@ -48,7 +48,9 @@ a {
 }
 
 h1, h2, h3, h4, h5 {
-	font:800 72px/1 sans-serif;
+	font-size:72px;
+	line-height: 1;
+	font-weight:800;
 	margin:0;
 	width:100%;
 }

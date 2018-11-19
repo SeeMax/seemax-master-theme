@@ -8,4 +8,5 @@ themes/seemax-theme/node_modules
 themes/seemax-theme/package-lock.json
 themes/seemax-theme/package.json
 themes/seemax-theme/gulpfile.js
+ai1wm-backups
 upload-backup

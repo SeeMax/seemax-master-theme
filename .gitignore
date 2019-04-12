@@ -4,5 +4,7 @@
 wp-config.php
 base_conf
 plugins
+mu-plugins
 themes/seemax-theme/node_modules
 upload-backup
+uploads

@@ -208,14 +208,16 @@ function extra_theme_nav()
 
 /* CUSTOM MENUS
 
-function wpb_custom_new_menu()
-{
-    register_nav_menu('MENU_NAME', __('MENU NAME'));
-    register_nav_menu('MENU_NAME', __('MENU NAME'));
-    register_nav_menu('MENU_NAME', __('MENU NAME'));
+function wpb_custom_new_menu() {
+  register_nav_menus(
+    array(
+      'our-foods-footer' => __('Our Foods Footer'),
+      'about-us-footer' => __('About Us Footer'),
+      'find-us-footer' => __('Find Us Footer')
+    )
+  );
 }
-add_action('init', 'wpb_custom_new_menu');
-
+add_action( 'init', 'wpb_custom_new_menu' );
 */
 
 /*//////////////////////////////*/

@@ -12,7 +12,7 @@ var pump = require('pump');
 gulp.task('browserSync', function() {
   browserSync.init({
     notify:false,
-    proxy: "LOCAL/DIRECTORY",
+    proxy: "https://DIRECTORY:LOCAL",
     port: 5000,
     open: "internal"
   })

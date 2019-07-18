@@ -7,3 +7,4 @@ plugins
 themes/seemax-theme/node_modules
 ai1wm-backups
 upload-backup
+uploads

@@ -26,16 +26,15 @@
 </head>
 <body <?php body_class(); ?> >
 <div class="wrapper">
-<!-- ADD A PRE-LOADEDER
-<div id="preloader">
-	<img class="fug_Preloader" src="<?php // echo get_template_directory_uri();?>/img/fug_preloader.svg" >
-</div> -->
+	<!-- ADD A PRE-LOADEDER
+	<div id="preloader">
+		<img class="fug_Preloader" src="<?php // echo get_template_directory_uri();?>/img/fug_preloader.svg" >
+	</div> -->
 	<header class="header" role="banner">
 		<div class="content header-inner-wrap">
 			<div class="header-logo">
-				<a href="/">
-					<img src="<?php echo get_template_directory_uri(); ?>/img/logo.svg" >
-				</a>
+				<a class="c-block-fill" href="/"></a>
+				<img src="<?php echo get_template_directory_uri(); ?>/img/logo.svg" >
 			</div>
 			<nav class="main-nav mainNav" role="navigation">
 				<?php main_theme_nav(); ?>

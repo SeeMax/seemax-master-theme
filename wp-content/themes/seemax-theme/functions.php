@@ -537,8 +537,7 @@ add_action('login_head', 'custom_login_logo');
 
 function remove_footer_admin()
 {
-    echo '<span id="footer-thankyou"> Made with love by <a target="_blank" href="#">COMPANY</a> </span>';
-}
+s}
 add_filter('admin_footer_text', 'remove_footer_admin');
 
 

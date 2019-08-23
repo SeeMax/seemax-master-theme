@@ -1,152 +1,83 @@
 <?php
-/* ////////// IMPORTANT ///////////
 
-INCLUDE THE BELOW CONTENT ABOVE THE WP DIRECTIVES IN THE HTACCESS FILE AFTER IT IS GENERATED.
-
-THIS WILL FIX CORS FONT ERRORS.
-
-DELETE THIS FROM FUNCTIONS WHEN COMPLETE
-
-<----   START COPY --- >
-
-<IfModule mod_setenvif.c>
-<IfModule mod_headers.c>
-<FilesMatch "\.(gif|png|jpe?g|svg|svgz|ico|webp)$">
-SetEnvIf Origin ":" IS_CORS
-Header set Access-Control-Allow-Origin "*" env=IS_CORS
-</FilesMatch>
-</IfModule>
-</IfModule>
-<IfModule mod_headers.c>
-<FilesMatch ".(eot|otf|ttf|woff|woff2)">
-    Header set Access-Control-Allow-Origin "*"
-</FilesMatch>
-</IfModule>
-
-<!----- END COPY --->
-
-*/
-
-function fug_setup()
+function seemax_setup()
 {
     add_editor_style();
     add_theme_support('automatic-feed-links');
     add_theme_support('post-thumbnails');
 }
-add_action('after_setup_theme', 'fug_setup');
+add_action('after_setup_theme', 'seemax_setup');
 
 
-/*//////////////////////////////*/
-/*//////////////////////////////*/
-/*//////////////////////////////*/
+/* Security Fixes */
+// Disallow WP-Admin Editor
+define( 'DISALLOW_FILE_EDIT', true );
+
 
 /* HTML 5 Boiler Plate Fixes */
-// Remove the <div> surrounding the dynamic navigation to cleanup markup
-function my_wp_nav_menu_args($args = '')
-{
+// Remove surrounding div on Nav
+function my_wp_nav_menu_args($args = '') {
     $args['container'] = false;
     return $args;
 }
 
-// Remove Injected classes, ID's and Page ID's from Navigation <li> items
-//function my_css_attributes_filter($var)
-//{
-//    return is_array($var) ? array() : '';
-//}
-
-// Remove invalid rel attribute values in the categorylist
-function remove_category_rel_from_category_list($thelist)
-{
-    return str_replace('rel="category tag"', 'rel="tag"', $thelist);
+/* HTML 5 Boiler Plate Fixes */
+// Remove invalid categorylist rel attribute
+function remove_category_rel_from_category_list($thelist) {
+  return str_replace('rel="category tag"', 'rel="tag"', $thelist);
 }
 
-// Add page slug to body class, love this - Credit: Starkers Wordpress Theme
-function add_slug_to_body_class($classes)
-{
-    global $post;
-    if (is_home()) {
-        $key = array_search('blog', $classes);
-        if ($key > -1) {
-            unset($classes[$key]);
-        }
-    } elseif (is_page()) {
-        $classes[] = sanitize_html_class($post->post_name);
-    } elseif (is_singular()) {
-        $classes[] = sanitize_html_class($post->post_name);
+/* HTML 5 Boiler Plate Fixes */
+// Add page slug to body class
+function add_slug_to_body_class($classes) {
+  global $post;
+  if (is_home()) {
+    $key = array_search('blog', $classes);
+    if ($key > -1) {
+      unset($classes[$key]);
     }
-
-    return $classes;
+  } elseif (is_page()) {
+    $classes[] = sanitize_html_class($post->post_name);
+  } elseif (is_singular()) {
+    $classes[] = sanitize_html_class($post->post_name);
+  }
+  return $classes;
 }
 
-// Pagination for paged posts, Page 1, Page 2, Page 3, with Next and Previous Links, No plugin
-function html5wp_pagination()
-{
-    global $wp_query;
-    $big = 999999999;
-    echo paginate_links(array(
-        'base' => str_replace($big, '%#%', get_pagenum_link($big)),
-        'format' => '?paged=%#%',
-        'current' => max(1, get_query_var('paged')),
-        'total' => $wp_query->max_num_pages
-    ));
+/* HTML 5 Boiler Plate Fixes */
+// Pagination for paged posts
+function html5wp_pagination() {
+  global $wp_query;
+  $big = 999999999;
+  echo paginate_links(array(
+    'base' => str_replace($big, '%#%', get_pagenum_link($big)),
+    'format' => '?paged=%#%',
+    'current' => max(1, get_query_var('paged')),
+    'total' => $wp_query->max_num_pages
+  ));
 }
 
+/* HTML 5 Boiler Plate Fixes */
 // Remove Admin bar
 function remove_admin_bar()
 {
     return false;
 }
 
+/* HTML 5 Boiler Plate Fixes */
 // Remove 'text/css' from our enqueued stylesheet
-// Remove 'text/css' from our enqueued stylesheet
-function html5_style_remove($tag)
-{
-    return preg_replace('~\s+type=["\'][^"\']++["\']~', '', $tag);
+function html5_style_remove($tag) {
+  return preg_replace('~\s+type=["\'][^"\']++["\']~', '', $tag);
 }
 
-
+/* HTML 5 Boiler Plate Fixes */
 // Remove thumbnail width and height dimensions that prevent fluid images in the_thumbnail
-function remove_thumbnail_dimensions($html)
-{
-    $html = preg_replace('/(width|height)="d*"s/', "", $html);
-    return $html;
-}
-/*//////////////////////////////*/
-/*//////////////////////////////*/
-/*//////////////////////////////*/
-
-
-// Custom Excerpts
-function html5wp_index($length) // Create 20 Word Callback for Index page Excerpts, call using html5wp_excerpt('html5wp_index');
-{
-    return 20;
+function remove_thumbnail_dimensions($html) {
+  $html = preg_replace('/(width|height)="d*"s/', "", $html);
+  return $html;
 }
 
-// Create 40 Word Callback for Custom Post Excerpts, call using html5wp_excerpt('html5wp_custom_post');
-function html5wp_custom_post($length)
-{
-    return 40;
-}
 
-// Create the Custom Excerpts callback
-function html5wp_excerpt($length_callback = '', $more_callback = '')
-{
-    global $post;
-    if (function_exists($length_callback)) {
-        add_filter('excerpt_length', $length_callback);
-    }
-    if (function_exists($more_callback)) {
-        add_filter('excerpt_more', $more_callback);
-    }
-    $output = get_the_excerpt();
-    $output = apply_filters('wptexturize', $output);
-    $output = apply_filters('convert_chars', $output);
-    $output = '<p>' . $output . '</p>';
-    echo $output;
-}
-/*//////////////////////////////*/
-/*//////////////////////////////*/
-/*//////////////////////////////*/
 
 /* Modify Main Nav Styles */
 function main_theme_nav()
@@ -172,9 +103,8 @@ function main_theme_nav()
         )
     );
 }
-/*//////////////////////////////*/
-/*//////////////////////////////*/
-/*//////////////////////////////*/
+
+
 
 /* Modify Extra Nav Styles
 function extra_theme_nav()
@@ -202,12 +132,7 @@ function extra_theme_nav()
 }  */
 
 
-/*//////////////////////////////*/
-/*//////////////////////////////*/
-/*//////////////////////////////*/
-
 /* CUSTOM MENUS
-
 function wpb_custom_new_menu() {
   register_nav_menus(
     array(
@@ -220,11 +145,28 @@ function wpb_custom_new_menu() {
 add_action( 'init', 'wpb_custom_new_menu' );
 */
 
-/*//////////////////////////////*/
-/*//////////////////////////////*/
-/*//////////////////////////////*/
 
-/*JS LIBRARIES */
+// Register HTML5 Blank Navigation
+function register_html5_menu() {
+  register_nav_menus(array( // Using array to specify more menus if needed
+    'header-menu' => __('Header Menu', 'theme'), // Main Navigation
+    'footer-menu' => __('Footer Menu', 'theme') // Sidebar Navigation
+  ));
+}
+
+
+/* UPGRADE JQUERY */
+function modify_jquery_version()
+{
+    if (!is_admin()) {
+        wp_deregister_script('jquery');
+        wp_register_script('jquery',
+'https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js');
+        wp_enqueue_script('jquery');
+    }
+}
+add_action('init', 'modify_jquery_version');
+
 
 /* Enqueue Scripts */
 function theme_header_scripts() {
@@ -273,22 +215,9 @@ function theme_header_scripts() {
 }
 
 
-/* UPGRADE JQUERY */
-function modify_jquery_version()
-{
-    if (!is_admin()) {
-        wp_deregister_script('jquery');
-        wp_register_script('jquery',
-'https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js');
-        wp_enqueue_script('jquery');
-    }
-}
-add_action('init', 'modify_jquery_version');
-
-
 /* Enqueue Styles */
 function theme_style() {
-  // wp_enqueue_style( 'google-fonts', "https://fonts.googleapis.com/css?family=Montserrat:400,700,900|Roboto:300i,400,400i,500,500i,700,700i", false );
+  wp_enqueue_style( 'google-fonts', "https://fonts.googleapis.com/css?family=Montserrat:400,700,900|Roboto:300i,400,400i,500,500i,700,700i", false );
 
   wp_register_style('fontawesome', get_template_directory_uri() . '/css/font-awesome.min.css', array(), '5.5', 'all');
   wp_enqueue_style('fontawesome'); // Enqueue it!
@@ -315,22 +244,6 @@ add_action('wp_enqueue_scripts', 'theme_style');
 
 
 
-// Register HTML5 Blank Navigation
-function register_html5_menu()
-{
-    register_nav_menus(array( // Using array to specify more menus if needed
-        'header-menu' => __('Header Menu', 'theme'), // Main Navigation
-        'footer-menu' => __('Footer Menu', 'theme') // Sidebar Navigation
-
-    ));
-}
-
-
-/*//////////////////////////////*/
-/*//////////////////////////////*/
-/*//////////////////////////////*/
-
-
 /*	Actions + Filters + ShortCodes	*/
 
 // Add Actions
@@ -338,7 +251,6 @@ add_action('init', 'theme_header_scripts'); // Add Custom Scripts to wp_head
 // add_action('wp_enqueue_scripts', 'theme_styles'); // Add Theme Stylesheet
 add_action('init', 'html5wp_pagination'); // Add HTML5 Pagination
 add_action('init', 'register_html5_menu'); // Add HTML5 Blank Menu
-
 // Remove Actions
 remove_action('wp_head', 'feed_links_extra', 3); // Display the links to the extra feeds such as category feeds
 remove_action('wp_head', 'feed_links', 2); // Display the links to the general feeds: Post and Comment Feed
@@ -367,155 +279,109 @@ add_filter('image_send_to_editor', 'remove_thumbnail_dimensions', 10); // Remove
 // Remove Filters
 remove_filter('the_excerpt', 'wpautop'); // Remove <p> tags from Excerpt altogether
 
-// ADD CUSTOM NAV CLASS
-// add_filter('nav_menu_css_class', 'custom_active_item_classes', 10, 2);
 
-
-
-/*//////////////////////////////*/
-/* GLOBAL THEME SAUCE */
-/*//////////////////////////////*/
-
-
-/*	ALLOW SVG UPLOAD XMLRPC 	*/
-function cc_mime_types($mimes)
-{
+//////////////  SEEMAXWORK  /////////////////
+///////////// ALLOW SVG UPLOADS ////////////
+///////////////////////////////////////////
+function cc_mime_types($mimes) {
     $mimes['svg'] = 'image/svg+xml';
     return $mimes;
 }
 add_filter('upload_mimes', 'cc_mime_types');
 
-/*	ACF GLOBAL OPTIONS */
 
+//////////////  SEEMAXWORK  /////////////////
+//////// ADD A COMPANY DETAILS PAGE ////////
+///////////////////////////////////////////
 if (function_exists('acf_add_options_page')) {
     acf_add_options_page(array(
-        'page_title'    => 'Global Options',
-        'menu_title'    => 'Global Options',
-        'menu_slug'    => 'global_options',
+        'page_title'    => 'Company Details',
+        'menu_title'    => 'Company Details',
+        'menu_slug'    => 'company_details',
         'capability'    => 'edit_posts',
         'redirect'    => false,
         'icon_url' => 'dashicons-media-spreadsheet',
         'position' => 6
     ));
 }
-    /*  ACF GLOBAL	*/
 
-function is_post_type($type)
-{
-    global $wp_query;
-    if ($type == get_post_type($wp_query->post->ID)) {
-        return true;
-    }
-    return false;
+
+//////////////  SEEMAXWORK  /////////////////
+///////// ADD ACF GLOBAL POST TYPE /////////
+///////////////////////////////////////////
+function is_post_type($type) {
+  global $wp_query;
+  if ($type == get_post_type($wp_query->post->ID)) {
+    return true;
+  }
+  return false;
 }
 
 
-/*//////////////////////////////*/
-/* CLIENT THEME SAUCE */
-/*//////////////////////////////*/
-
-/* NEW FEATURED IMAGE SIZES */
+//////////////  SEEMAXWORK  /////////////////
+///////// ADD FEATURED IMAGE SIZES /////////
+///////////////////////////////////////////
 // add_image_size('image-name', 500, 9999);
 // add_image_size('image-name', 500, 300, true);
 
 
-/* CUSTOM POST TYPES  */
 
-// add_action('init', 'create_post_type');
+//////////////  SEEMAXWORK  /////////////////
+////////// ADD CUSTOM POST TYPES ///////////
+///////////////////////////////////////////
+// function create_post_type() {
+//   register_post_type('events',
+//   // CPT Options
+//   array(
+//     'labels' => array(
+//        'name' => __('Events'),
+//        'singular_name' => __('Event')
+//     ),
+//     'public' => true,
+//     'menu_icon' => 'dashicons-portfolio',
+//     'has_archive' => true,
+//     'supports' => array('title','editor'),
+//    )
+//  );
+// }
+//  add_action('init', 'create_post_type');
 
-//  function create_post_type()
-//  {
-//      register_post_type('events',
-//      // CPT Options
-//          array(
-//              'labels' => array(
-//                  'name' => __('Events'),
-//                  'singular_name' => __('Event')
-//              ),
-//              'public' => true,
-//              'menu_icon' => 'dashicons-portfolio',
-//              'has_archive' => true,
-//              'supports' => array('title','editor'),
-//          )
-//      );
-//  }
 
-/* 	CPT TAXONOMIES 	*/
-
+//////////////  SEEMAXWORK  /////////////////
+//////// ADD CUSTOM POST TAXONOMIES ////////
+///////////////////////////////////////////
+// function add_events_taxonomies() {
+//   $labels = array(
+//     'name'            => 'Types',
+//     'singular_name'   => 'Type',
+//     'search_items'    => 'Search Types',
+//     'edit_item'       => 'Edit Type',
+//     'update_item'     => 'Update Type',
+//     'add_new_item'     => 'Add New Type',
+//     'new_item_name'    => 'New Type',
+//     'menu_name'        => 'Type',
+//   );
+//   $args = array(
+//     'labels'            => $labels,
+//     'public'            =>  true,
+//     'hierarchical'      =>  true,
+//     'show_in_nav_menus' =>  true,
+//     'has_archive'       =>  true,
+//     'show_ui'           =>  true,
+//     'show_admin_column' =>  true,
+//     'rewrite'           =>  array('slug' => 'event-type', 'with_front' => false),
+//   );
+//   register_taxonomy('event-type', array('events'), $args);
+// }
 // add_action('init', 'add_events_taxonomies');
 
-// function add_events_taxonomies()
-// {
-//    $labels = array(
-//        'name'            => 'Types',
-//        'singular_name'   => 'Type',
-//        'search_items'    => 'Search Types',
-//        'edit_item'       => 'Edit Type',
-//        'update_item'     => 'Update Type',
-//        'add_new_item'     => 'Add New Type',
-//        'new_item_name'    => 'New Type',
-//        'menu_name'        => 'Type',
-//    );
-//    $args = array(
-//        'labels'            => $labels,
-//        'public'            =>  true,
-//        'hierarchical'      =>  true,
-//        'show_in_nav_menus' =>  true,
-//       	'has_archive'       =>  true,
-//        'show_ui'           =>  true,
-//        'show_admin_column' =>  true,
-//        'rewrite'           =>  array('slug' => 'event-type', 'with_front' => false),
-//    );
-//    register_taxonomy('event-type', array('events'), $args);
-// }
 
-
-/*//////////////////////////////*/
-/* CLIENT ADMIN BRANDING GLOBAL MODS */
-/*//////////////////////////////*/
-
-/* CHANGE DEFAULT POSTS LABEL */
-
-
-// function change_post_label()
-// {
-//     global $menu;
-//     global $submenu;
-//     $menu[5][0] = 'Press';
-//     $submenu['edit.php'][5][0] = 'Press';
-//     $submenu['edit.php'][10][0] = 'Add Press';
-//     $submenu['edit.php'][16][0] = 'Press Tags';
-//     echo '';
-// }
-// function change_post_object()
-// {
-//     global $wp_post_types;
-//     $labels = &$wp_post_types['post']->labels;
-//     $labels->name = 'Press';
-//     $labels->singular_name = 'Press';
-//     $labels->add_new = 'Add Press';
-//     $labels->add_new_item = 'Add Press';
-//     $labels->edit_item = 'Edit Press';
-//     $labels->new_item = 'Press';
-//     $labels->view_item = 'View Press';
-//     $labels->search_items = 'Search Press';
-//     $labels->not_found = 'No Press found';
-//     $labels->not_found_in_trash = 'No Press found in Trash';
-//     $labels->all_items = 'All Press';
-//     $labels->menu_name = 'Press';
-//     $labels->name_admin_bar = 'Press';
-// }
-
-// add_action('admin_menu', 'change_post_label');
-// add_action('init', 'change_post_object');
-
-
-/*	BRAND ADMIN LOGIN WITH COMPANY 	*/
+//////////////  SEEMAXWORK  /////////////////
+/////// ADD BRAND NAME AS ADMIN LOGIN //////
+///////////////////////////////////////////
 function custom_login_logo()
 {
   $blog_title = get_bloginfo( 'name' );
-
-
   echo
   "<style type='text/css'>
 	h1 a {
@@ -528,23 +394,23 @@ function custom_login_logo()
     line-height:2;
   }
 	</style>";
-
 }
 add_action('login_head', 'custom_login_logo');
 
 
-/*	CUSTOMIZE ADMIN FOOTER 	*/
-
-function remove_footer_admin()
-{
-s}
+//////////////  SEEMAXWORK  /////////////////
+/////////// CUSTOMIZE ADMIN FOOTER /////////
+///////////////////////////////////////////
+function remove_footer_admin() {
+  echo '<span id="footer-thankyou"> A Custom Theme By <a target="_blank" href="http://www.seemax.work">SeeMaxWork</a> </span>';
+}
 add_filter('admin_footer_text', 'remove_footer_admin');
 
 
 
-
-/* ADMIN AREA CLEANUP AND GLOBAL MODS */
-
+//////////////  SEEMAXWORK  /////////////////
+//////// REMOVE WORDPRESS DASHBOARD ////////
+///////////////////////////////////////////
 function remove_dashboard_meta()
 {
     remove_meta_box('dashboard_incoming_links', 'dashboard', 'normal');
@@ -560,46 +426,35 @@ function remove_dashboard_meta()
 add_action('admin_init', 'remove_dashboard_meta');
 
 
+//////////////  SEEMAXWORK  /////////////////
+/////// REMOVE EMOJIS FROM WORDPRESS ///////
+///////////////////////////////////////////
 if (!function_exists('disable_default_dashboard_widgets')) {
-    function disable_default_dashboard_widgets()
-    {
-        global $wp_meta_boxes;
-        // unset($wp_meta_boxes['dashboard']['normal']['core']['dashboard_right_now']);    // Right Now Widget
-        unset($wp_meta_boxes['dashboard']['normal']['core']['welcome_panel']);        // Activity Widget
-        unset($wp_meta_boxes['dashboard']['normal']['core']['dashboard_activity']);        // Activity Widget
-        unset($wp_meta_boxes['dashboard']['normal']['core']['dashboard_recent_comments']); // Comments Widget
-        unset($wp_meta_boxes['dashboard']['normal']['core']['dashboard_incoming_links']);  // Incoming Links Widget
-        unset($wp_meta_boxes['dashboard']['normal']['core']['dashboard_plugins']);         // Plugins Widget
-        unset($wp_meta_boxes['dashboard']['side']['core']['dashboard_quick_press']);    // Quick Press Widget
-        unset($wp_meta_boxes['dashboard']['side']['core']['dashboard_recent_drafts']);     // Recent Drafts Widget
-        unset($wp_meta_boxes['dashboard']['side']['core']['dashboard_primary']);           //
-        unset($wp_meta_boxes['dashboard']['side']['core']['dashboard_secondary']);         //
-        // remove plugin dashboard boxes
-        // unset($wp_meta_boxes['dashboard']['normal']['core']['yoast_db_widget']);           // Yoast's SEO Plugin Widget
-        // unset($wp_meta_boxes['dashboard']['normal']['core']['rg_forms_dashboard']);        // Gravity Forms Plugin Widget
-        // unset($wp_meta_boxes['dashboard']['normal']['core']['bbp-dashboard-right-now']);   // bbPress Plugin Widget
-    }
-    add_action('wp_dashboard_setup', 'disable_default_dashboard_widgets');
+    function disable_default_dashboard_widgets() {
+    global $wp_meta_boxes;
+    // unset($wp_meta_boxes['dashboard']['normal']['core']['dashboard_right_now']);    // Right Now Widget
+    unset($wp_meta_boxes['dashboard']['normal']['core']['welcome_panel']);        // Activity Widget
+    unset($wp_meta_boxes['dashboard']['normal']['core']['dashboard_activity']);        // Activity Widget
+    unset($wp_meta_boxes['dashboard']['normal']['core']['dashboard_recent_comments']); // Comments Widget
+    unset($wp_meta_boxes['dashboard']['normal']['core']['dashboard_incoming_links']);  // Incoming Links Widget
+    unset($wp_meta_boxes['dashboard']['normal']['core']['dashboard_plugins']);         // Plugins Widget
+    unset($wp_meta_boxes['dashboard']['side']['core']['dashboard_quick_press']);    // Quick Press Widget
+    unset($wp_meta_boxes['dashboard']['side']['core']['dashboard_recent_drafts']);     // Recent Drafts Widget
+    unset($wp_meta_boxes['dashboard']['side']['core']['dashboard_primary']);           //
+    unset($wp_meta_boxes['dashboard']['side']['core']['dashboard_secondary']);         //
+    // remove plugin dashboard boxes
+    // unset($wp_meta_boxes['dashboard']['normal']['core']['yoast_db_widget']);           // Yoast's SEO Plugin Widget
+    // unset($wp_meta_boxes['dashboard']['normal']['core']['rg_forms_dashboard']);        // Gravity Forms Plugin Widget
+    // unset($wp_meta_boxes['dashboard']['normal']['core']['bbp-dashboard-right-now']);   // bbPress Plugin Widget
+  }
+  add_action('wp_dashboard_setup', 'disable_default_dashboard_widgets');
 }
 
 
-/*//////////////////////////////*/
-/*  CORE CLEANUP AND SYSTEM MODS  */
-/*//////////////////////////////*/
-
-/* SET UPLOAD LIMITS */
-
-/* USE HTACCESS TO CONTROL UPLOAD LIMITS */
-            //	php_value upload_max_filesize 5M
-            // 	php_value post_max_size 5M
-            //	php_value max_execution_time 300
-            //	php_value max_input_time 300
-
-
-/* 	Disable the emoji's 	*/
-
-function disable_emojis()
-{
+//////////////  SEEMAXWORK  /////////////////
+/////// REMOVE EMOJIS FROM WORDPRESS ///////
+///////////////////////////////////////////
+function disable_emojis() {
     remove_action('wp_head', 'print_emoji_detection_script', 7);
     remove_action('admin_print_scripts', 'print_emoji_detection_script');
     remove_action('wp_print_styles', 'print_emoji_styles');
@@ -613,39 +468,21 @@ function disable_emojis()
 add_action('init', 'disable_emojis');
 
 /**
-* REMOVE EMOJIS
 * @param array $plugins
 * @return array Difference betwen the two arrays
 */
-function disable_emojis_tinymce($plugins)
-{
-    if (is_array($plugins)) {
-        return array_diff($plugins, array( 'wpemoji' ));
-    } else {
-        return array();
-    }
-}
-
-/**
-* Remove emoji CDN hostname from DNS prefetching hints.
-* @param array $urls URLs to print for resource hints.
-* @param string $relation_type The relation type the URLs are printed for.
-* @return array Difference betwen the two arrays.
-*/
-function disable_emojis_remove_dns_prefetch($urls, $relation_type)
-{
-    if ('dns-prefetch' == $relation_type) {
-        /** This filter is documented in wp-includes/formatting.php */
-$emoji_svg_url = apply_filters('emoji_svg_url', 'https://s.w.org/images/core/emoji/2/svg/');
-
-        $urls = array_diff($urls, array( $emoji_svg_url ));
-    }
-
-    return $urls;
+function disable_emojis_tinymce($plugins) {
+  if (is_array($plugins)) {
+    return array_diff($plugins, array( 'wpemoji' ));
+  } else {
+    return array();
+  }
 }
 
 
-// Remove Wordpress Menu Items
+//////////////  SEEMAXWORK  /////////////////
+//////// REMOVE WORDPRESS MENU ITEMS ///////
+///////////////////////////////////////////
 function remove_menus(){
 
   if ( is_user_logged_in() ) {
@@ -667,5 +504,38 @@ function remove_menus(){
 }
 add_action( 'admin_menu', 'remove_menus', 9999);
 
-/*	DISABLE XMLRPC 	*/
-add_filter('xmlrpc_enabled', '__return_false');
+
+//////////////  SEEMAXWORK  /////////////////
+////// CHILD CPT MENU PARENT HIGHLIGHT /////
+///////////////////////////////////////////
+function add_current_nav_class($classes, $item) {
+	// Getting the current post details
+	global $post;
+	// Getting the post type of the current post
+	$current_post_type = get_post_type_object(get_post_type($post->ID));
+	$current_post_type_slug = $current_post_type->rewrite[slug];
+	// Getting the URL of the menu item
+	$menu_slug = strtolower(trim($item->url));
+	// If the menu item URL contains the current post types slug add the current-menu-item class
+	if (strpos($menu_slug,$current_post_type_slug) !== false) {
+	   $classes[] = 'current-menu-item';
+	}
+	// Return the corrected set of classes to be added to the menu item
+	return $classes;
+}
+add_action('nav_menu_css_class', 'add_current_nav_class', 10, 2 );
+
+
+//////////////  SEEMAXWORK  /////////////////
+/////////// CUSTOM EXCERPT STYLES //////////
+///////////////////////////////////////////
+function seemax_custom_excerpt_length( $length ) {
+   return 26;
+}
+add_filter( 'excerpt_length', 'seemax_custom_excerpt_length', 999 );
+
+function seemax_custom_excerpt_more($more) {
+   global $post;
+   return '<a href="'. get_permalink($post->ID) . '">'. __('...') .'</a>';
+}
+add_filter('excerpt_more', 'seemax_custom_excerpt_more');

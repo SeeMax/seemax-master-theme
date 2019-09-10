@@ -29,14 +29,16 @@ gulp.task('sass', function(cb) {
     cb(err);
 });
 
+
 // This Funtion Waits for The sass function to complete
 gulp.task('css', ['sass'], function() {
   return gulp.src('style.css')
-    .pipe(autoprefixer({
-      grid: true,
-      browsers: ['>1%']
-    }))
+    .pipe(autoprefixer())
     .pipe(gulp.dest(''))
+    .pipe(browserSync.reload({
+      stream: true
+    }))
+    cb(err);
 });
 
 

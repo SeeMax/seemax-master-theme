@@ -39,7 +39,7 @@
 			</ul>
 		</div>
 		<div class="copyright">
-			&copy; Copyright 2018
+			&copy; Copyright <?php echo date("Y"); ?>
 		</div>
 	</div>
 </footer>

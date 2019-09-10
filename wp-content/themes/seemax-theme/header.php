@@ -26,9 +26,9 @@
 </head>
 <body <?php body_class(); ?> >
 <div class="wrapper">
-	<!-- ADD A PRE-LOADEDER
-	<div id="preloader">
-		<img class="fug_Preloader" src="<?php // echo get_template_directory_uri();?>/img/fug_preloader.svg" >
+	<!-- ADD A PRE-LOADEDER -->
+	<!-- <div id="preloader">
+		<img src="<?php echo get_template_directory_uri();?>/img/preloader.svg" >
 	</div> -->
 	<header class="header" role="banner">
 		<div class="content header-inner-wrap">

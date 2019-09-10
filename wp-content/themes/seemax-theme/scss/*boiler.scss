@@ -63,20 +63,18 @@ ul {
 	margin: 0;
 }
 
-
-
 ::selection {
-	background:$highlight-color;
+	background:yellow;
 	color:#000;
 	text-shadow:none;
 }
 ::-webkit-selection {
-	background:$highlight-color;
+	background:yellow;
 	color:#000;
 	text-shadow:none;
 }
 ::-moz-selection {
-	background:$highlight-color;
+	background:yellow;
 	color:#000;
 	text-shadow:none;
 }

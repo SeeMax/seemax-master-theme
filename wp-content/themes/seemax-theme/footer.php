@@ -39,7 +39,7 @@
 			</ul>
 		</div>
 		<div class="copyright">
-			&copy; Copyright <?php echo date("Y"); ?>
+			&copy; Copyright <?php echo date("Y"); ?> <?php echo get_bloginfo();?> 
 		</div>
 	</div>
 </footer>
